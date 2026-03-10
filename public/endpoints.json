@@ -1,0 +1,50 @@
+{
+  "DOWNLOAD": [
+    {
+      "name": "TIKTOK",
+      "description": "Download video TikTok tanpa watermark",
+      "endpoint": "/api/download/video",
+      "type": "video",
+      "status": true,
+      "params": {
+        "url": "Masukkan URL TikTok"
+      }
+    },
+    {
+      "name": "MEDIAFIRE",
+      "description": "Download file dari Mediafire",
+      "endpoint": "/api/download/mediafire",
+      "type": "json",
+      "status": true,
+      "params": {
+        "url": "Masukkan URL Mediafire"
+      }
+    }
+  ],
+
+  "AI": [
+    {
+      "name": "DOLA",
+      "description": "Chat dengan AI Dola",
+      "endpoint": "/api/ai/dola",
+      "type": "json",
+      "status": true,
+      "params": {
+        "text": "Tanyakan sesuatu"    
+      }
+    }
+  ],
+
+  "TOOLS": [
+    {
+      "name": "IMAGE GENERATOR",
+      "description": "Generate gambar AI dari prompt",
+      "endpoint": "/api/tools/image",
+      "type": "image",
+      "status": true,
+      "params": {
+        "prompt": "Describe image"     
+      }
+    }
+  ]
+}
