@@ -1,6 +1,6 @@
 # Aizen REST API Docs
 
-![Aizen Logo](./src/picture2.png)
+![Aizen Logo](./public/src/picture2.png)
 
 Aizen REST API Docs adalah **web interface interaktif** untuk menampilkan dokumentasi REST API. Memiliki fitur **search endpoint**, **execute API langsung**, **theme switcher**, dan **background audio**.
 
