@@ -24,13 +24,13 @@
 
   "AI": [
     {
-      "name": "DOLA",
-      "description": "Chat dengan AI Dola",
-      "endpoint": "/api/ai/dola",
+      "name": "GPT",
+      "description": "Chat dengan AI Gpt",
+      "endpoint": "/api/ai/gpt",
       "type": "json",
       "status": true,
       "params": {
-        "text": "Tanyakan sesuatu"    
+        "text": "Ask Something"    
       }
     }
   ],
