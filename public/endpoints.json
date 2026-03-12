@@ -47,13 +47,61 @@
   ],
 
   "NEWS": [
-    {
-      "name": "CNN",
-      "description": "Cnn News",
-      "endpoint": "/api/news/cnn",
-      "type": "json",
-      "status": true,
-      "params": {}
-    }
-  ]
+  {
+    "name": "CNN",
+    "description": "CNN Indonesia News",
+    "endpoint": "/api/news/cnn",
+    "type": "json",
+    "status": true,
+    "params": {}
+  },
+  {
+    "name": "BBC",
+    "description": "BBC World News",
+    "endpoint": "/api/news/bbc",
+    "type": "json",
+    "status": true,
+    "params": {}
+  },
+  {
+    "name": "Antara",
+    "description": "Antara Indonesia News",
+    "endpoint": "/api/news/antara",
+    "type": "json",
+    "status": true,
+    "params": {}
+  },
+  {
+    "name": "CNBC",
+    "description": "CNBC Indonesia News",
+    "endpoint": "/api/news/cnbc",
+    "type": "json",
+    "status": true,
+    "params": {}
+  },
+  {
+    "name": "Kompas",
+    "description": "Kompas News",
+    "endpoint": "/api/news/kompas",
+    "type": "json",
+    "status": true,
+    "params": {}
+  },
+  {
+    "name": "Detik",
+    "description": "Detik News",
+    "endpoint": "/api/news/detik",
+    "type": "json",
+    "status": true,
+    "params": {}
+  },
+  {
+    "name": "iNews",
+    "description": "iNews Indonesia",
+    "endpoint": "/api/news/inews",
+    "type": "json",
+    "status": true,
+    "params": {}
+  }
+]
 }
