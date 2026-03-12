@@ -14,11 +14,8 @@ const img = await axios.get(random, {
 responseType: "arraybuffer"
 })
 
-const buffer = Buffer.from(img.data)
-
-res.setHeader("Content-Type", "image/jpeg")
-
-return res.send(buffer)
+res.setHeader("Content-Type", img.headers["content-type"])
+return res.send(img.data)
 
 } catch (err) {
 
