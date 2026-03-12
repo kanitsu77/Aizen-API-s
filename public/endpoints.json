@@ -35,16 +35,14 @@
     }
   ],
 
-  "TOOLS": [
+  "RANDOM": [
     {
-      "name": "IMAGE GENERATOR",
-      "description": "Generate gambar AI dari prompt",
-      "endpoint": "/api/tools/image",
+      "name": "blue-Archive random image",
+      "description": "Get random image bkue archive",
+      "endpoint": "/api/random/blue-archive",
       "type": "image",
       "status": true,
-      "params": {
-        "prompt": "Describe image"     
-      }
+      "params": {}
     }
   ]
 }
