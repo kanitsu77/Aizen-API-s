@@ -3,7 +3,7 @@
     {
   "name": "TikTok Downloader",
   "description": "Download TikTok Video, Audio, Slide & Metadata",
-  "endpoint": "/api/downloader/tiktok",
+  "endpoint": "/api/download/tiktok",
   "type": "json",
   "status": true,
   "params": {
