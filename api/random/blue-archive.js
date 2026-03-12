@@ -5,7 +5,7 @@ module.exports = async (req, res) => {
 try {
 
 const img = await axios.get(
-`https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}`,
+`https://raw.githubusercontent.com/rynxzyy/blue-archive-r-img/refs/heads/main/links.json`,
 {
 responseType: "arraybuffer"
 }
