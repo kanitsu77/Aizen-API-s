@@ -61,18 +61,18 @@ return result.trim()
 
 module.exports = async (req, res) => {
 
-const q = req.query.q
+const text = req.query.text || req.body?.text
 
-if (!q) {
+if (!text) {
 return res.json({
 status: false,
-message: "Parameter 'q' diperlukan"
+message: "Parameter 'text' diperlukan"
 })
 }
 
 try {
 
-const response = await gptService(q)
+const response = await gptService(text)
 
 return res.json({
 status: true,
