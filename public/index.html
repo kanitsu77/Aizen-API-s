@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aizen API Docs</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+--bg:#0b0b0b;
+--text:#eee;
+--box:#121212;
+--border:#2a2a2a;
+--green:#00aa88;
+--aurora:#00ffcc;
+}
+
+body{
+font-family:monospace;
+background:var(--bg);
+color:var(--text);
+padding:15px;
+overflow-x:hidden;
+transition:.3s;
+}
+
+body.light{
+--bg:#fff;
+--text:#111;
+--box:#f7f7f7;
+--border:#ddd;
+}
+
+#loader{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:var(--bg);
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+z-index:999;
+}
+
+.ring{
+width:70px;
+height:70px;
+border-radius:50%;
+border:5px solid rgba(0,170,136,.2);
+border-top:5px solid var(--green);
+animation:spin 1s linear infinite;
+margin-bottom:15px;
+}
+
+@keyframes spin{
+0%{transform:rotate(0)}
+100%{transform:rotate(360deg)}
+}
+
+.loader-title{
+font-size:18px;
+margin-bottom:15px;
+letter-spacing:2px;
+}
+
+.loader-grid{
+display:grid;
+grid-template-columns:repeat(2,20px);
+gap:8px;
+}
+
+.loader-grid div{
+width:20px;
+height:20px;
+background:var(--green);
+animation:blink 1.2s infinite ease-in-out;
+}
+
+.loader-grid div:nth-child(2){animation-delay:.2s}
+.loader-grid div:nth-child(3){animation-delay:.4s}
+.loader-grid div:nth-child(4){animation-delay:.6s}
+
+@keyframes blink{
+0%,100%{opacity:.3;transform:scale(.8)}
+50%{opacity:1;transform:scale(1)}
+}
+
+#app{
+display:none;
+opacity:0;
+transform:translateY(80px) scale(.92);
+filter:blur(6px);
+}
+
+#app.show{
+animation:appEnter 1.2s cubic-bezier(.16,1,.3,1) forwards;
+}
+
+@keyframes appEnter{
+0%{
+opacity:0;
+transform:translateY(80px) scale(.92);
+filter:blur(6px);
+}
+
+40%{
+opacity:.6;
+transform:translateY(30px) scale(1.02);
+filter:blur(2px);
+}
+
+70%{
+opacity:.9;
+transform:translateY(8px) scale(.995);
+filter:blur(.5px);
+}
+
+100%{
+opacity:1;
+transform:translateY(0) scale(1);
+filter:blur(0);
+}
+}
+
+h1{
+text-align:center;
+margin-bottom:20px;
+}
+
+.main-pp{
+width:80px;
+height:80px;
+border-radius:50%;
+display:block;
+margin:0 auto 10px;
+}
+
+.stats{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+justify-content:center;
+margin-bottom:20px;
+}
+
+.stat-box{
+flex:1 1 120px;
+padding:12px;
+border:1px solid var(--border);
+border-radius:8px;
+background:var(--box);
+text-align:center;
+font-size:14px;
+}
+
+.search{
+text-align:center;
+margin-bottom:25px;
+}
+
+.search input{
+width:80%;
+padding:12px;
+border:1px solid var(--border);
+background:var(--box);
+border-radius:8px;
+color:var(--text);
+}
+
+.category{
+margin-top:25px;
+padding:15px;
+border:1px solid var(--border);
+border-radius:10px;
+background:var(--box);
+}
+
+.category-title{
+font-size:18px;
+margin-bottom:10px;
+}
+
+.endpoint{
+border:1px solid var(--border);
+border-radius:10px;
+padding:14px;
+margin-bottom:12px;
+background:var(--box);
+cursor:pointer;
+transition:.25s;
+}
+
+.endpoint.active{
+border:2px solid transparent;
+background:
+linear-gradient(var(--box),var(--box)) padding-box,
+linear-gradient(135deg,#00ffcc,#00aaff,#00ffcc) border-box;
+box-shadow:0 0 10px rgba(0,255,200,.35);
+}
+
+.endpoint-header{
+display:flex;
+justify-content:space-between;
+}
+
+.desc{
+font-size:13px;
+color:#888;
+margin-top:4px;
+}
+
+.ready{color:#00ff88}
+.error{color:#ff4d4d}
+
+.params{
+max-height:0;
+overflow:hidden;
+transition:max-height .3s;
+margin-top:10px;
+}
+
+.params.open{
+max-height:900px;
+}
+
+.param{
+margin-bottom:10px;
+}
+
+.param input{
+width:100%;
+padding:8px;
+border:1px solid var(--border);
+border-radius:6px;
+background:var(--bg);
+color:var(--text);
+}
+
+.warn{
+font-size:12px;
+color:red;
+margin-top:2px;
+}
+
+.buttons{
+display:flex;
+gap:10px;
+margin-top:10px;
+}
+
+button{
+padding:10px 14px;
+border-radius:6px;
+cursor:pointer;
+background:var(--green);
+color:white;
+border:2px solid transparent;
+transition:.15s;
+}
+
+button:active{
+border:2px solid var(--aurora);
+transform:scale(.96);
+}
+
+.copy-btn{
+cursor:pointer;
+pointer-events:auto;
+user-select:none;
+}
+
+.warn{
+font-size:12px;
+color:#ff4d4d;
+margin-top:2px;
+display:none;
+}
+
+.box{
+position:relative;
+margin-top:12px;
+border:1px solid var(--border);
+border-radius:8px;
+overflow:hidden;
+}
+
+.copy-btn{
+position:absolute;
+top:6px;
+right:6px;
+font-size:18px;
+background:var(--box);
+border:1px solid var(--border);
+padding:4px 8px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.copy-btn:active{
+transform:scale(.9);
+border:1px solid var(--aurora);
+}
+
+.box-header{
+padding:8px 10px;
+background:var(--box);
+font-size:13px;
+border-bottom:1px solid var(--border);
+}
+
+.box-content{
+padding:10px;
+font-size:13px;
+white-space:pre-wrap;
+}
+
+.copy-out{
+display:inline-block;
+margin-top:10px;
+margin-bottom:4px;
+font-size:14px;
+padding:4px 8px;
+border-radius:6px;
+background:var(--box);
+border:1px solid var(--border);
+cursor:pointer;
+}
+
+.copy-out:active{
+border:1px solid var(--aurora);
+transform:scale(.95);
+}
+
+.hamburger{
+position:fixed;
+top:10px;
+right:10px;
+font-size:26px;
+cursor:pointer;
+}
+
+.result{
+margin-top:10px;
+}
+
+#tabPanel{
+position:fixed;
+top:0;
+left:-280px;
+width:260px;
+height:100%;
+background:var(--box);
+padding:15px;
+transition:.4s;
+display:flex;
+flex-direction:column;
+}
+
+#tabPanel.show{
+left:0;
+}
+
+.tab-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.tab-user{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.tab-user img{
+width:45px;
+height:45px;
+border-radius:50%;
+}
+
+.tab-divider{
+height:1px;
+background:var(--border);
+margin:12px 0;
+}
+
+.tab-section-title{
+background:var(--box);
+padding:5px 8px;
+font-size:13px;
+border-radius:6px;
+margin-bottom:10px;
+border:1px solid var(--border);
+color:var(--text);
+}
+
+.tab-buttons{
+display:flex;
+gap:8px;
+}
+
+.tab-buttons button{
+flex:1;
+padding:8px;
+border-radius:8px;
+background:#1a1a1a;
+border:1px solid var(--border);
+color:var(--text);
+}
+
+.tab-buttons button.active{
+background:var(--green);
+border:none;
+}
+
+.tab-bottom{
+margin-top:auto;
+display:flex;
+justify-content:space-between;
+border-top:1px solid var(--border);
+padding-top:10px;
+}
+
+.tab-bottom a{
+text-decoration:none;
+color:var(--green);
+font-size:14px;
+display:flex;
+align-items:center;
+gap:6px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="loader">
+<div class="ring"></div>
+<div class="loader-title">Aizen API'S</div>
+<div class="loader-grid">
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+</div>
+</div>
+
+<div id="app">
+
+<div class="hamburger" onclick="toggleTab()">☰</div>
+
+<img src="src/picture.png" class="main-pp">
+<h1>AIZEN REST API'S</h1>
+
+<div class="stats">
+<div class="stat-box" id="runtimeBox">Runtime</div>
+<div class="stat-box" id="endpointBox">Endpoint</div>
+<div class="stat-box" id="categoryBox">Kategori</div>
+<div class="stat-box" id="requestBox">Request</div>
+</div>
+
+<div class="search">
+<input id="search" placeholder="Search endpoint...">
+</div>
+
+<div id="api"></div>
+
+</div>
+
+<div id="tabPanel">
+
+<div class="tab-header">
+<div class="tab-user">
+<img src="src/picture.png">
+<b>Kanitsu</b>
+</div>
+<div onclick="closeTab()">✕</div>
+</div>
+
+<div class="tab-divider"></div>
+
+<div class="tab-section-title">Settings</div>
+
+<div>
+Theme
+<div class="tab-buttons">
+<button id="darkBtn" class="active" onclick="setTheme('dark')">🌙</button>
+<button id="lightBtn" onclick="setTheme('light')">☀️</button>
+</div>
+</div>
+
+<br>
+
+<div>
+Audio
+<div class="tab-buttons">
+<button id="audioOn" onclick="setAudio(true)">🔊</button>
+<button id="audioOff" class="active" onclick="setAudio(false)">🔇</button>
+</div>
+</div>
+
+<div class="tab-bottom">
+<a href="#"><i class="fab fa-whatsapp"></i>Whatsapp</a>
+<a href="#"><i class="fab fa-github"></i>Github</a>
+</div>
+
+</div>
+
+<audio id="bgm" loop>
+<source src="https://files.catbox.moe/ivp6zu.mp3">
+</audio>
+
+<script>
+
+let totalRequest=0
+let startTime=Date.now()
+
+function formatTime(sec){
+
+let d=Math.floor(sec/86400)
+sec%=86400
+
+let h=Math.floor(sec/3600)
+sec%=3600
+
+let m=Math.floor(sec/60)
+let s=sec%60
+
+return `${d}d, ${h}h, ${m}m, ${s}s`
+}
+
+setInterval(()=>{
+let runtime=Math.floor((Date.now()-startTime)/1000)
+runtimeBox.innerText="Runtime: "+formatTime(runtime)
+requestBox.innerText="Request: "+totalRequest
+},1000)
+
+setTimeout(()=>{
+loader.style.opacity="0"
+setTimeout(()=>{
+loader.style.display="none"
+app.style.display="block"
+
+
+requestAnimationFrame(()=>{
+app.classList.add("show")
+})
+
+},600)
+
+},1500)
+
+
+function toggleTab(){tabPanel.classList.toggle("show")}
+function closeTab(){tabPanel.classList.remove("show")}
+
+function setTheme(mode){
+if(mode==="dark"){
+document.body.classList.remove("light")
+darkBtn.classList.add("active")
+lightBtn.classList.remove("active")
+}else{
+document.body.classList.add("light")
+lightBtn.classList.add("active")
+darkBtn.classList.remove("active")
+}
+}
+
+
+function setAudio(state){
+let audio=document.getElementById("bgm")
+if(state){
+audio.play()
+audioOn.classList.add("active")
+audioOff.classList.remove("active")
+}else{
+audio.pause()
+audioOff.classList.add("active")
+audioOn.classList.remove("active")
+}
+}
+
+
+
+fetch("endpoints.json")
+.then(r=>r.json())
+.then(data=>render(data))
+
+function render(data){
+
+const container = document.getElementById("api")
+container.innerHTML = ""
+
+let totalEndpoint = 0
+let totalCategory = 0
+
+Object.keys(data).forEach(cat=>{
+
+totalCategory++
+
+let html = `<div class="category">
+<div class="category-title">${cat}</div>`
+
+data[cat].forEach((ep,i)=>{
+
+totalEndpoint++
+
+let paramsHTML = ""
+
+Object.keys(ep.params).forEach(p=>{
+paramsHTML += `
+<div class="param">
+<label>${p}</label>
+<input data-param="${p}" placeholder="${ep.params[p]}">
+<div class="warn">Isi semua params!</div>
+</div>`
+})
+
+html += `
+<div class="endpoint" onclick="activateEndpoint(this)">
+
+<div class="endpoint-header"
+onclick="toggleParams('p${cat+i}');event.stopPropagation();">
+
+<div>${ep.name}</div>
+
+<div class="${ep.status ? 'ready' : 'error'}">
+[ ${ep.status ? 'READY' : 'ERROR'} ]
+</div>
+
+</div>
+
+<div class="desc">${ep.description}</div>
+
+<div class="params" id="p${cat+i}">
+
+${paramsHTML}
+
+<div class="buttons">
+<button onclick="executeAPI('${ep.endpoint}','p${cat+i}');event.stopPropagation()">EXECUTE</button>
+<button onclick="resetAPI('p${cat+i}');event.stopPropagation()">REFRESH</button>
+</div>
+
+<div class="result hidden" id="urlbox${cat+i}">
+
+<div class="copy-out" onclick="copyText('url${cat+i}',event)">📋 Copy URL</div>
+
+<div class="box">
+<div class="box-header">URL</div>
+<div class="box-content" id="url${cat+i}"></div>
+</div>
+
+</div>
+
+<div class="result hidden" id="resbox${cat+i}">
+
+<div class="copy-out" onclick="copyText('res${cat+i}',event)">📋 Copy Result</div>
+
+<div class="box">
+<div class="box-header">Result</div>
+<div class="box-content" id="res${cat+i}"></div>
+</div>
+
+</div>
+
+</div>
+
+</div>`
+
+})
+
+html += "</div>"
+container.innerHTML += html
+
+})
+
+endpointBox.innerText = "Endpoint: " + totalEndpoint
+categoryBox.innerText = "Kategori: " + totalCategory
+
+}
+
+function toggleParams(id){
+document.getElementById(id).classList.toggle("open")
+}
+
+function resetAPI(id){
+
+document.querySelectorAll(`#${id} input`)
+.forEach(i=>i.value="")
+
+document.getElementById("urlbox"+id.replace("p","")).classList.add("hidden")
+document.getElementById("resbox"+id.replace("p","")).classList.add("hidden")
+
+}
+
+function executeAPI(endpoint,id){
+
+let inputs=document.querySelectorAll(`#${id} input`)
+let empty=false
+
+inputs.forEach(i=>{
+let warn=i.parentElement.querySelector(".warn")
+
+if(!i.value.trim()){
+warn.style.display="block"
+empty=true
+}else{
+warn.style.display="none"
+}
+})
+
+if(empty) return
+
+let base = window.location.origin
+
+let url = base + endpoint + "?" + Array.from(inputs)
+.map(i=>i.dataset.param+"="+encodeURIComponent(i.value))
+.join("&")
+
+totalRequest++
+
+let urlBox=document.getElementById("url"+id.replace("p",""))
+let resBox=document.getElementById("res"+id.replace("p",""))
+
+document.getElementById("urlbox"+id.replace("p","")).classList.remove("hidden")
+document.getElementById("resbox"+id.replace("p","")).classList.remove("hidden")
+
+urlBox.innerText=url
+resBox.innerText="Loading..."
+
+fetch(url)
+.then(r=>r.text())
+.then(t=>resBox.innerText=t)
+.catch(()=>resBox.innerText="Error")
+
+}
+
+function copyText(id,e){
+
+e.stopPropagation()
+
+let text=document.getElementById(id).innerText
+
+navigator.clipboard.writeText(text).then(()=>{
+alert("Copied!")
+})
+
+}
+
+search.addEventListener("input",function(){
+
+let q=this.value.toLowerCase()
+
+document.querySelectorAll(".category").forEach(cat=>{
+
+let show=false
+
+cat.querySelectorAll(".endpoint").forEach(ep=>{
+
+let match=ep.innerText.toLowerCase().includes(q)
+
+ep.style.display=match?"block":"none"
+
+if(match)show=true
+
+})
+
+cat.style.display=show?"block":"none"
+
+})
+
+})
+
+function activateEndpoint(el){
+
+document.querySelectorAll(".endpoint")
+.forEach(e=>e.classList.remove("active"))
+
+el.classList.add("active")
+
+}
+
+</script>
+
+</body>
+</html>
+
