@@ -748,11 +748,61 @@ urlBox.innerText=url
 resBox.innerText="Loading..."
 
 fetch(url)
-.then(r=>r.json())
-.then(data=>{
-resBox.innerText = JSON.stringify(data, null, 2)
+.then(async r=>{
+
+let type = r.headers.get("content-type") || ""
+
+if(type.includes("application/json")){
+
+let data = await r.json()
+resBox.innerText = JSON.stringify(data,null,2)
+
+}
+
+else if(type.startsWith("image")){
+
+let blob = await r.blob()
+let img = URL.createObjectURL(blob)
+
+resBox.innerHTML = `<img src="${img}" style="max-width:100%;border-radius:8px">`
+
+}
+
+else if(type.startsWith("video")){
+
+let blob = await r.blob()
+let vid = URL.createObjectURL(blob)
+
+resBox.innerHTML = `
+<video controls style="max-width:100%;border-radius:8px">
+<source src="${vid}">
+</video>`
+
+}
+
+else if(type.startsWith("audio")){
+
+let blob = await r.blob()
+let aud = URL.createObjectURL(blob)
+
+resBox.innerHTML = `
+<audio controls style="width:100%">
+<source src="${aud}">
+</audio>`
+
+}
+
+else{
+
+let text = await r.text()
+resBox.innerText = text
+
+}
+
 })
-.catch(()=>resBox.innerText="Error")
+.catch(()=>{
+resBox.innerText="Error"
+})
 
 }
 
