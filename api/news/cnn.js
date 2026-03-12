@@ -21,7 +21,17 @@ let title = (item.match(/<title>(.*?)<\/title>/)||[])[1]
 let link = (item.match(/<link>(.*?)<\/link>/)||[])[1]
 let date = (item.match(/<pubDate>(.*?)<\/pubDate>/)||[])[1]
 
-return { title, link, date }
+let thumb =
+(item.match(/<media:content.*?url="(.*?)"/) || [])[1] ||
+(item.match(/<enclosure.*?url="(.*?)"/) || [])[1] ||
+null
+
+return {
+title,
+link,
+date,
+thumbnail: thumb
+}
 
 })
 
