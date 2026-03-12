@@ -746,8 +746,10 @@ urlBox.innerText=url
 resBox.innerText="Loading..."
 
 fetch(url)
-.then(r=>r.text())
-.then(t=>resBox.innerText=t)
+.then(r=>r.json())
+.then(data=>{
+resBox.innerText = JSON.stringify(data, null, 2)
+})
 .catch(()=>resBox.innerText="Error")
 
 }
