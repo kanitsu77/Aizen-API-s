@@ -4,13 +4,32 @@ module.exports = async (req, res) => {
 
 try {
 
-const url = req.query.url || req.query.q
+const url = req.query.url
 if (!url) {
-return res.status(400).json({
-status: false,
-error: "Masukkan parameter url"
+return res.json({
+status:false,
+error:"Masukkan parameter url"
 })
 }
+
+
+const page = await fetch(url,{
+headers:{ "User-Agent":"Mozilla/5.0" }
+})
+
+const htmlPage = await page.text()
+const $t = cheerio.load(htmlPage)
+
+const caption =
+$t('meta[property="og:description"]').attr("content") ||
+null
+
+const cover =
+$t('meta[property="og:image"]').attr("content") ||
+null
+
+
+
 
 const body = new URLSearchParams({
 q: url,
@@ -19,15 +38,14 @@ page: "0",
 lang: "id"
 }).toString()
 
-const r = await fetch("https://savetik.io/api/ajaxSearch", {
-method: "POST",
-headers: {
-"content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-"x-requested-with": "XMLHttpRequest",
-"user-agent": "Mozilla/5.0",
-"origin": "https://savetik.io",
-"referer": "https://savetik.io/id/download-tiktok-photos",
-"accept": "*/*"
+const r = await fetch("https://savetik.io/api/ajaxSearch",{
+method:"POST",
+headers:{
+"content-type":"application/x-www-form-urlencoded; charset=UTF-8",
+"x-requested-with":"XMLHttpRequest",
+"user-agent":"Mozilla/5.0",
+"origin":"https://savetik.io",
+"referer":"https://savetik.io/id/download-tiktok-photos"
 },
 body
 })
@@ -35,79 +53,42 @@ body
 const json = await r.json()
 const html = typeof json.data === "string" ? json.data : ""
 
-if (!html) throw "Gagal mengambil data"
-
 const $ = cheerio.load(html)
 
-const caption =
-$(".desc").text().trim() ||
-$(".content-text").text().trim() ||
-null
-
-const username =
-$(".author-name").text().trim() ||
-$(".username").text().trim() ||
-null
-
-const nickname =
-$(".author-nickname").text().trim() ||
-null
-
-const cover =
-$(".video-thumb img").attr("src") ||
-null
-
-const likes =
-$(".likes").text().trim() ||
-null
-
-const comments =
-$(".comments").text().trim() ||
-null
-
-const shares =
-$(".shares").text().trim() ||
-null
-
-const mp4 =
+const video =
 $('a:contains("Unduh MP4 [1]")').attr("href") ||
 $('a:contains("Unduh MP4 [2]")').attr("href") ||
 $('a:contains("Unduh MP4 HD")').attr("href") ||
 null
 
-const mp3 =
+const audio =
 $('a:contains("Unduh MP3")').attr("href") ||
 null
 
 const images = []
 
-$(".photo-list ul.download-box li").each((_, el) => {
+$(".photo-list ul.download-box li").each((_,el)=>{
 const img = $(el).find("a[title='Unduh Gambar']").attr("href")
-if (img) images.push(img)
+if(img) images.push(img)
 })
 
 res.json({
-status: true,
+status:true,
 creator: "Kanitsu",
-result: {
+result:{
 caption,
-username,
-nickname,
-likes,
-comments,
-shares,
 cover,
-video: mp4,
-audio: mp3,
+video,
+audio,
 images
 }
 })
 
-} catch (e) {
+}catch(e){
 
 res.status(500).json({
-status: false,
-error: String(e)
+status:false,
+error:String(e)
 })
 
 }
