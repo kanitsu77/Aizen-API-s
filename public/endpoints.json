@@ -50,7 +50,7 @@
     {
       "name": "CNN",
       "description": "Cnn News",
-      "endpoint": "api/news/cnn",
+      "endpoint": "/api/news/cnn",
       "type": "json",
       "status": true,
       "params": {}
