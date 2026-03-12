@@ -4,16 +4,23 @@ module.exports = async (req, res) => {
 
 try {
 
-const img = await axios.get(
-`https://raw.githubusercontent.com/rynxzyy/blue-archive-r-img/refs/heads/main/links.json`,
-{
-responseType: "arraybuffer"
-}
+const { data } = await axios.get(
+"https://raw.githubusercontent.com/rynxzyy/blue-archive-r-img/refs/heads/main/links.json"
 )
+
+const random = data[Math.floor(Math.random() * data.length)]
+
+const img = await axios.get(random, {
+responseType: "arraybuffer"
+})
 
 const buffer = Buffer.from(img.data)
 
-res.setHeader("Content-Type", "image/jpeg")
+res.writeHead(200, {
+"Content-Type": "image/jpeg",
+"Content-Length": buffer.length
+})
+
 res.end(buffer)
 
 } catch (err) {
@@ -25,4 +32,4 @@ error: String(err)
 
 }
 
-  }
+}
