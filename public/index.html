@@ -694,21 +694,19 @@ document.getElementById(id).classList.toggle("open")
 
 function resetAPI(id){
 
-let inputs = document.querySelectorAll(`#${id} input`)
-
-inputs.forEach(i=>{
-i.value = ""
-let warn = i.parentElement.querySelector(".warn")
-if(warn) warn.style.display = "none"
+document.querySelectorAll(`#${id} input`).forEach(i=>{
+i.value=""
+let warn=i.parentElement.querySelector(".warn")
+if(warn) warn.style.display="none"
 })
 
-let index = id.substring(1)
+let index=id.slice(1)
 
-let urlBox = document.getElementById("urlbox"+index)
-let resBox = document.getElementById("resbox"+index)
+document.getElementById("urlbox"+index).classList.add("hidden")
+document.getElementById("resbox"+index).classList.add("hidden")
 
-if(urlBox) urlBox.classList.add("hidden")
-if(resBox) resBox.classList.add("hidden")
+document.getElementById("url"+index).innerText=""
+document.getElementById("res"+index).innerText=""
 
 }
 
