@@ -694,11 +694,21 @@ document.getElementById(id).classList.toggle("open")
 
 function resetAPI(id){
 
-document.querySelectorAll(`#${id} input`)
-.forEach(i=>i.value="")
+let inputs = document.querySelectorAll(`#${id} input`)
 
-document.getElementById("urlbox"+id.replace("p","")).classList.add("hidden")
-document.getElementById("resbox"+id.replace("p","")).classList.add("hidden")
+inputs.forEach(i=>{
+i.value = ""
+let warn = i.parentElement.querySelector(".warn")
+if(warn) warn.style.display = "none"
+})
+
+let index = id.substring(1)
+
+let urlBox = document.getElementById("urlbox"+index)
+let resBox = document.getElementById("resbox"+index)
+
+if(urlBox) urlBox.classList.add("hidden")
+if(resBox) resBox.classList.add("hidden")
 
 }
 
