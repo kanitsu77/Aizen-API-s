@@ -1,15 +1,15 @@
 {
   "DOWNLOAD": [
     {
-      "name": "TIKTOK",
-      "description": "Download video TikTok tanpa watermark",
-      "endpoint": "/api/download/video",
-      "type": "video",
-      "status": true,
-      "params": {
-        "url": "Masukkan URL TikTok"
+  "name": "TikTok Downloader",
+  "description": "Download TikTok Video, Audio, Slide & Metadata",
+  "endpoint": "/api/downloader/tiktok",
+  "type": "json",
+  "status": true,
+  "params": {
+    "url": "TikTok Video URL"
       }
-    },
+     },
     {
       "name": "MEDIAFIRE",
       "description": "Download file dari Mediafire",
