@@ -4,8 +4,7 @@ module.exports = async (req, res) => {
 
 try {
 
-const { url } = req.query.url || req.query
-
+const url = req.query.url || req.query.q
 if (!url) {
 return res.status(400).json({
 status: false,
