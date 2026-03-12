@@ -13,11 +13,7 @@ responseType: "arraybuffer"
 
 const buffer = Buffer.from(img.data)
 
-res.writeHead(200, {
-"Content-Type": "image/jpeg",
-"Content-Length": buffer.length
-})
-
+res.setHeader("Content-Type", "image/jpeg")
 res.end(buffer)
 
 } catch (err) {
