@@ -4,7 +4,13 @@ module.exports = async (req, res) => {
 
 try {
 
-const { data } = await axios.get("https://www.cnbcindonesia.com/news/rss")
+const { data } = await axios.get(
+"https://www.cnnindonesia.com/nasional/rss",
+{
+headers:{
+"User-Agent":"Mozilla/5.0"
+}
+})
 
 const items = [...data.matchAll(/<item>([\s\S]*?)<\/item>/g)]
 
@@ -28,10 +34,10 @@ result
 } catch (err) {
 
 res.status(500).json({
-status: false,
-error: String(err)
+status:false,
+error:String(err)
 })
 
 }
 
-  }
+}
