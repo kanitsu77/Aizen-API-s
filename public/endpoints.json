@@ -103,5 +103,17 @@
     "status": true,
     "params": {}
   }
+],
+"SEARCH": [
+  {
+    "name": "Youtube Search",
+    "description": "Search video youtube",
+    "endpoint": "/api/search/yts",
+    "type": "json",
+    "status": true,
+    "params": {
+      "query": "Masukan Query"
+    }
+  }
 ]
 }
