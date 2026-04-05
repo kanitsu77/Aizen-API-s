@@ -1,7 +1,6 @@
 {
   "version": 2,
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/src/(.*)", "destination": "/public/src/$1" },
     { "source": "/endpoints.json", "destination": "/public/endpoints.json" },
     { "source": "/", "destination": "/public/index.html" }
