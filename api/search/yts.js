@@ -1,4 +1,3 @@
-const yts = require("yt-search")
 
 module.exports = async (req, res) => {
 
@@ -13,20 +12,10 @@ error: "Query is required"
 })
 }
 
-const ytResults = await yts.search(q)
-
-const result = ytResults.videos.map(video => ({
-title: video.title,
-channel: video.author.name,
-duration: video.timestamp,
-thumbnail: video.thumbnail,
-url: video.url
-}))
-
 res.json({
 status: true,
 creator: "Kanitsu",
-result
+result: "Jawa"
 })
 
 } catch (error) {
