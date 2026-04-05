@@ -114,6 +114,14 @@
     "params": {
       "query": "Masukan Query"
     }
+  },
+  {
+    "name": "YTO",
+    "description": "YTO",
+    "endpoint": "/api/search/yto",
+    "type": "json",
+    "status": true,
+    "params": {}
   }
 ]
 }
